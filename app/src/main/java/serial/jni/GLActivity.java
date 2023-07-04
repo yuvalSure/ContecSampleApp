@@ -37,8 +37,11 @@ public class GLActivity extends Activity {
     private String strCase;
     /**
      * 2018-05 isFinishActivity
-     * 此变量根据实际使用场景设置，当返回执行关闭当前波形显示acticity时，由于可能蓝牙正在连接中，会返回连接失败的消息
-     * 需要判断相关处理操作是否已经执行，避免多次执行打开某个activity的操作或对其它变量及状态的处理，造成不必要的错误
+     * This variable is set according to the actual usage scenario.
+     * When returning to execute and closing the current waveform display activity,
+     * because the Bluetooth may be connecting, a connection failure message will be returned.
+     * It is necessary to judge whether the relevant processing operations have been executed,
+     * so as to avoid multiple executions of opening an activity or processing other variables and states, causing unnecessary errors
      */
     private boolean isFinishActivity;
     private int m = 0;
@@ -61,10 +64,10 @@ public class GLActivity extends Activity {
         mContext = this;
 
         DisplayMetrics dm = new DisplayMetrics();
-        // 取得窗口属性
+        // get window properties
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;// 屏幕宽度
-        int height = dm.heightPixels;// 屏幕高度
+        int width = dm.widthPixels;// screen width
+        int height = dm.heightPixels;// screen height
         Log.e("Activity WxH", width + "x" + height);
         Log.e("Density", "" + dm.densityDpi);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -136,7 +139,7 @@ public class GLActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                // 分析数据文件，结果存储为xml
+                // Analyze data files and store results as xml
 /*
                 int ret = data.ecgAnalyzeToXml(
                         Environment.getExternalStorageDirectory() + "/"
@@ -146,7 +149,7 @@ public class GLActivity extends Activity {
                         Environment.getExternalStorageDirectory()
                                 + "/conclusion.cn");
                 */
-//自定义心率上下限
+//Custom heart rate upper and lower limits
                 int ret = data.ecgAnalyzeToXml("/mnt/sdcard/AECG",
                         "/mnt/sdcard/BECG_advice.xml",
                         "/mnt/sdcard/conclusion.cn",50,60);
@@ -160,7 +163,7 @@ public class GLActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // data.setGain(DataUtils.DISPLAY_GAIN__20);
-                // 数据文件转换成aecg格式病例
+                // Convert the data file to aecg format case.
                 // int ret = data.ecgDataToAECG(
                 // Environment.getExternalStorageDirectory() + "/"
                 // + strCase + ".c8k",
@@ -170,7 +173,7 @@ public class GLActivity extends Activity {
                                 + "20170419152220.c8k",
                         Environment.getExternalStorageDirectory() + "/BECG.xml");
 /*
-                18导时使用ecg18DataToAECG这个方法进行aecg转换
+                Convert the aecg using the ecg18DataToAECG method with 18 leads.
                 int ret = data.ecg18DataToAECG(
                         Environment.getExternalStorageDirectory() + "/"
                                 + "20170419152220.c8k",
@@ -188,20 +191,21 @@ public class GLActivity extends Activity {
 //				data.setSpeed(DataUtils.DISPLAY_SPEED_50);
                 if (n % 5 == 0) {
                     data.setFilter(0);
-                    Toast.makeText(mContext, "滤波全关", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "All Filters Off", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 1) {
                     data.setFilter(1);
-                    Toast.makeText(mContext, "工频滤波", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Power Line Filter", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 2) {
                     data.setFilter(2);
-                    Toast.makeText(mContext, "肌电滤波", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "EMG Filter", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 3) {
                     data.setFilter(4);
-                    Toast.makeText(mContext, "基线滤波", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Baseline Filter", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 4) {
                     data.setFilter(7);
-                    Toast.makeText(mContext, "滤波全开", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "All Filters On", Toast.LENGTH_LONG).show();
                 }
+
                 n++;
             }
         });
@@ -209,7 +213,7 @@ public class GLActivity extends Activity {
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                data.cancelCase();// 取消正在保存的文件
+//                data.cancelCase();// I am canceling the file that is currently being saved.
 /*                if (!isFinishActivity) {
                     isFinishActivity = true;
                     Intent intent = new Intent();
@@ -226,7 +230,7 @@ public class GLActivity extends Activity {
             @Override
             public void onClick(View v) {
                 data.saveCase(Environment.getExternalStorageDirectory() + "/",
-                        strCase, 10);// 存储文件 参数为路径，文件名，存储秒数
+                        strCase, 10);// Store file parameters include path, file name, and storage duration in seconds.
             }
         });
         //displaymode
@@ -235,16 +239,16 @@ public class GLActivity extends Activity {
             public void onClick(View v) {
                 if (q % 4 == 0) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_12x1);
-                    Toast.makeText(mContext, "12x1显示，仅12导有效！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "12x1 display, only 12 leads are valid!", Toast.LENGTH_LONG).show();
                 } else if (q % 4 == 1) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_6x2);
-                    Toast.makeText(mContext, "6x2显示，仅12导有效！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "6x2 display, only 12 leads are valid!", Toast.LENGTH_LONG).show();
                 } else if (q % 4 == 2) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_2x6_LIMB);
-                    Toast.makeText(mContext, "6导（肢体导联）显示", Toast.LENGTH_LONG).show();
-                }  else if (q % 4 == 2) {
+                    Toast.makeText(mContext, "6 leads (limb leads) display", Toast.LENGTH_LONG).show();
+                } else if (q % 4 == 2) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_2x6_CHEST);
-                    Toast.makeText(mContext, "6导（胸导导联）显示", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "6 leads (chest leads) display", Toast.LENGTH_LONG).show();
                 }
                 q++;
             }
@@ -302,9 +306,9 @@ public class GLActivity extends Activity {
                 m++;
             }
         });
-        // data对象包含所有心电采集相关操作
-        // glView负责显示
-        // 蓝牙采集
+        // dataThe object contains all the operations related to ECG data collection.
+        // glViewResponsible for display
+        // Bluetooth collection
 /*
         Intent para = null;
         para = getIntent();
@@ -375,10 +379,10 @@ public class GLActivity extends Activity {
             });
         }
         */
-        // 演示文件采集
+        // Demo file collection
          data = new DataUtils(Environment.getExternalStorageDirectory().getPath()+"/demo.ecg");
 /*
-		// USB 8000G 设备支持
+		// USB 8000G Device support
 		mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 		data = new DataUtils(mUsbManager, new USBConnectionStateListener() {
 
@@ -493,12 +497,12 @@ public class GLActivity extends Activity {
         }, 460800,DataUtils.ECG_LEAD_18_TYPE_18);
         */
 
-        // 以下关于glView操作为必要操作，请不要更改
+        // The following operations regarding glView are necessary operations. Please do not modify.
         data.setDisplayMode(DataUtils.DISPLAY_MODE_12x1);
 
         glView = (GLView) this.findViewById(R.id.GLWave);
         glView.initDisplay();
-//		glView.setBackground(Color.TRANSPARENT, Color.rgb(111, 110, 110));//2018-06-21 注释掉,避免Bitmap出现异常
+//		glView.setBackground(Color.TRANSPARENT, Color.rgb(111, 110, 110));//2018-06-21 Commented out to avoid Bitmap exceptions.
 
 //        glView.setMsg(mHandler);
         glView.setZOrderOnTop(true);
@@ -509,7 +513,7 @@ public class GLActivity extends Activity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss",
                 Locale.getDefault());
-        Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
+        Date curDate = new Date(System.currentTimeMillis());// Get current time.
         // strCase = formatter.format(curDate);
         strCase = "AECG";
     }
@@ -523,7 +527,8 @@ public class GLActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        // 此函数执行时，不要执行强制退出、多次点击返回按键等影响android生命周期管理的操作！
+        // When executing this function, do not perform operations that force quitting,
+        // repeatedly press the back button, or any other actions that affect Android's lifecycle management.
         glView.onPause();
         data.gatherEnd();
     }
@@ -623,7 +628,7 @@ public class GLActivity extends Activity {
                     break;
                 case MESSAGE_USB_CONNECT_REMOVE_DEVICE:
                     Log.e("BL", "MESSAGE_USB_CONNECT_REMOVE_DEVICE");
-                    Toast.makeText(mContext, "USB设备被移除", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "USB device has been removed.", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
                 case MESSAGE_USB_CONNECT_FAILED:
@@ -668,12 +673,12 @@ public class GLActivity extends Activity {
     class nativeMsg extends NativeCallBack {
 
         @Override
-        public void callHRMsg(short hr) {// 心率
+        public void callHRMsg(short hr) {// Heart rate
             mHandler.obtainMessage(MESSAGE_UPDATE_HR, hr).sendToTarget();
         }
 
         @Override
-        public void callLeadOffMsg(String flagOff) {// 导联脱落
+        public void callLeadOffMsg(String flagOff) {// Lead detachment
             // Log.e("LF", flagOff);
             mHandler.obtainMessage(MESSAGE_UPDATE_LeadOff, flagOff).sendToTarget();
         }
@@ -686,24 +691,24 @@ public class GLActivity extends Activity {
         @Override
         public void callCaseStateMsg(short state) {
             if (state == 0) {
-                Log.e("Save", "start");// 开始存储文件
+                Log.e("Save", "start");// Start saving the file.
             } else {
-                Log.e("Save", "end");// 存储完成
+                Log.e("Save", "end");// Storage complete.
             }
         }
 
         @Override
-        public void callHBSMsg(short hbs) {// 心率 hbs = 1表示有心跳
+        public void callHBSMsg(short hbs) {// Heart rate hbs = 1 indicates the presence of a heartbeat.
             // Log.e("HeartBeat", "Sound"+hbs);
         }
 
         @Override
-        public void callBatteryMsg(short per) {// 采集盒电量
+        public void callBatteryMsg(short per) {// Battery level of the acquisition box.
             // Log.e("Battery", ""+per);
         }
 
         @Override
-        public void callCountDownMsg(short per) {// 剩余存储时长
+        public void callCountDownMsg(short per) {// remaining storage duration
             // Log.e("CountDown", ""+per);
         }
 
@@ -711,10 +716,10 @@ public class GLActivity extends Activity {
         public void callWaveColorMsg(boolean flag) {
             Log.e("WaveColor", "" + flag);
             if (flag) {
-                // 波形稳定后颜色变为绿色
+                // After the waveform stabilizes, the color changes to green.
                 glView.setRendererColor(0, 1.0f, 0, 0);
-                // 以下操作可以实现自动开始保存文件
-                // data.saveCase(Environment.getExternalStorageDirectory() + "/",strCase, 20);// 存储文件 参数为路径，文件名，存储秒数
+                // The following operations can achieve automatic file saving
+// data.saveCase(Environment.getExternalStorageDirectory() + "/", strCase, 20); // Save file, parameters are path, file name, and storage duration in seconds
             }
         }
         @Override
