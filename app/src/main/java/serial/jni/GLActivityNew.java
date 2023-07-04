@@ -56,10 +56,10 @@ public class GLActivityNew extends Activity {
         mContext = this;
 
         DisplayMetrics dm = new DisplayMetrics();
-        // 取得窗口属性
+        // Get window properties
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;// 屏幕宽度
-        int height = dm.heightPixels;// 屏幕高度
+        int width = dm.widthPixels;// screen width
+        int height = dm.heightPixels;// screen height
         Log.e("Activity WxH", width + "x" + height);
         Log.e("Density", "" + dm.densityDpi);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
