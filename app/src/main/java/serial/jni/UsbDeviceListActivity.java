@@ -243,11 +243,11 @@ private void refreshDeviceList() {
 					if (device != null) {
 						// call method to set up device communication
 
-						Toast.makeText(UsbDeviceListActivity.this, "设备可以通信",
+						Toast.makeText(UsbDeviceListActivity.this, "The devices can communicate",
 								Toast.LENGTH_LONG).show();
 					}
 				} else {
-					Toast.makeText(UsbDeviceListActivity.this, "无可用设备", Toast.LENGTH_LONG)
+					Toast.makeText(UsbDeviceListActivity.this, "No available devices.", Toast.LENGTH_LONG)
 							.show();
 				}
 			}

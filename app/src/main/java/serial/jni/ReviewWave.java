@@ -1,7 +1,5 @@
 package serial.jni;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,35 +19,49 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewConfiguration;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 
 /**
- * 回顾波形
- *
- * @author Administrator 2014-01-22 将波形绘制由drawLine 改为drawPath，实现速度优化 2014-12-11
- * 当导联显示方式为节律导联，需要特殊处理： 1.不支持智能排列 2.不支持横向滑动3.不支持长按事件 2014-12-11 下午
- * 去除节律导联显示方式 2016-09-19排序默认方式改为智能排序
- * 2016-09-29 1.智能排序算法更改
- * 2.排序方式、显示的是第几屏数据，均改为针对应用程序的全局变量，方便传值给ReportInfo
+ * Review Waveform
+ * <p>
+ * Author: Administrator
+ * Date: 2014-01-22
+ * Description: Changed waveform drawing from drawLine to drawPath for improved speed.
+ * Date: 2014-12-11
+ * Description: Special handling required when the lead display mode is rhythm lead:
+ * Intelligent arrangement is not supported.
+ * Horizontal scrolling is not supported.
+ * Long press events are not supported.
+ * Date: 2014-12-11 (afternoon)
+ * Description: Removed rhythm lead display mode.
+ * Date: 2016-09-19
+ * Description: Changed default sorting method to intelligent sorting.
+ * Date: 2016-09-29
+ * Description:
+ * Modified intelligent sorting algorithm.
+ * Sorting method and displayed screen data are now global variables for the application, making it easier to pass values to ReportInfo.
  */
 public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = ReviewWave.class.getSimpleName();
-    // 病例对应的是多少导联：12或18
+    // Number of leads for the case: 12 or 18
     private int mLeadCount = 12;
 
-    // 设置节律导联
+    // Set rhythm lead
     private static final int MSG_LONG_CLICK = 0x00000001;
 
-    // 触摸事件标识
+    // Touch event identifiers
     private static final int TOUCH_NONE = 0x00000002;
     private static final int TOUCH_DRAG_WAVE = 0x00000003;
-    // 切屏
+    // Screen switch
     private static final int TOUCH_CHANGE_SCREEN = 0x00000004;
     private static final int TOUCH_LONG_PRESS = 0x00000005;
     private static final int TOUCH_ZOOM = 0x00000006;
 
-    private boolean mIsLeadDragMode;// 可以移动导联位置，只有12导联的时候才可以执行
-    private int mDragLeadIndexs = -1;//2016-09-30 只保存用户点击区域的索引值，根据余值判断是否为同一排的，同一排的需要同步移动
+    private boolean mIsLeadDragMode; // Can move lead positions, only applicable for 12 leads
+    private int mDragLeadIndexs = -1; // 2016-09-30 Only save the index value of the user-clicked area, determine
+    // if they are in the same row based on the remainder, and move them synchronously if they are in the same row.
     private float mDragLeadYDistance = 0;
 
     private int touchMode = TOUCH_NONE;
@@ -59,16 +71,16 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
             .getLongPressTimeout();
     private static final int TAP_TIMEOUT = ViewConfiguration.getTapTimeout();
 
-    // 自定：
-    // 每毫米8个像素
-    private float perMillmeter = 8;
+    // Customization:
+// 8 pixels per millimeter
+    private float perMillimeter = 8;
 
-    // 采样率
+    // Sampling rate
     public static final int SAMPLE_RATE = 1000;
 
-    // 计算多少个像素画一个点
+    // Calculate how many pixels to draw a point
     private float twoPointerDistance;
-    // 导联名称所占宽度
+    // Width occupied by lead names
     private int mLeadNameWidth;
     private float perColumnWidth;
 
@@ -91,36 +103,36 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
     private RectF[] mLeadRectFs;
     private int mDragPoiner = 0;
     private int mStartDataIndex = 0;
-    //2016-10-08当前显示的是第几屏，默认0为第一屏
+    //2016-10-08 The currently displayed screen, default 0 for the first screen
     private int mWhichScreenData = 0;
-    // 参数：
-    // 走速
+    // Parameters:
+// Paper speed
     private float mSpeed = 10;
-    // 肢导增益
+    // Limb lead gain
     private float mLimbLeadGain = 10;
-    // 胸导增益
+    // Chest lead gain
     private float mChestLeadGain = 10;
-    // 节律导联
+    // Rhythm leads
     private int[] mRhythmLeads = new int[3];
-    // 导联显示方式
+// Lead display style
 
     private static final String LEAD_DISPLAY_6X2P = "6";
 
-    // private static final String LEAD_DISPLAY_RHYTHMS = "rhythmLead";// 需要特殊处理
+    // private static final String LEAD_DISPLAY_RHYTHMS = "rhythmLead"; // Requires special handling
     private String mLeadDisplayStyle = "12";
 
-    // 保存波形数据
+    // Save waveform data
     private ConcurrentLinkedQueue<Short> mWaveDatas;
-    // 导联名称
+    // Lead names
     private String[] mLeadNames;
 
     private SurfaceHolder mHolder;
     private boolean startDrawWaveThread = true;
     private boolean refreshWave = false;
     private Bitmap mScrollBarSrcBitmap;
-    private boolean isSmartSort = true;// 是否是智能排序，智能排序时可上下滚动//2016-09-14 默认为智能排序
+    private boolean isSmartSort = true; // Whether it is smart sorting, can scroll up and down when smart sorting //2016-09-14 Default is smart sorting
 
-    private int wmvscale = 440;// 定标系数2015-08-20 11:08心电图机定标系数是440 ，体检的是806
+    private int wmvscale = 440; // Calibration coefficient 2015-08-20 11:08 The calibration coefficient of the ECG machine is 440, and the physical examination is 806.
     private Context mContext;
 
     public ReviewWave(Context context, AttributeSet attrs) {
@@ -132,34 +144,33 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
         float scaledDensity = dm.scaledDensity;// 缩放密度
         // DRAG_DISTANCE *= scaledDensity;
         mLeadNames = new String[]{"I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6"};
-//        perMillmeter = dm.densityDpi / 25.4f;
-        perMillmeter = 0.014f * 200
-                * dm.widthPixels / (20.5f * 25);
+//        perMillimeter = dm.densityDpi / 25.4f;
+        perMillimeter = 0.014f * 200 * dm.widthPixels / (20.5f * 25);
         jumpPoint = 1;
-        oneXwidth = perMillmeter * 25f / 200 * jumpPoint;//8个像素代表1mm，走速为25mm/s,采样率1000，每隔5个点画一个
-//        oneXwidth = 1;//8个像素代表1mm，走速为25mm/s,采样率1000，每隔5个点画一个
+        oneXwidth = perMillimeter * 25f / 200 * jumpPoint; // 8 pixels represent 1mm, speed is 25mm/s, sampling rate is 1000, draw every 5 points
+// oneXwidth = 1; // 8 pixels represent 1mm, speed is 25mm/s, sampling rate is 1000, draw every 5 points
         mLastX = 0;
         Log.e(TAG, "oneXwidth:" + oneXwidth + ",scaledDensity:" + scaledDensity + ",dm.heightPixels:" + dm.heightPixels + ",dm.widthPixels:" + dm.widthPixels + ",dm.densityDpi:" + dm.densityDpi);
-        twoPointerDistance = 100 * perMillmeter / SAMPLE_RATE;// 2015-06-11
-        // 50变200，减少绘点个数
-        // 2015-16-10
-        // 200变100
-        // 设置画笔属性
+        twoPointerDistance = 100 * perMillimeter / SAMPLE_RATE; // 2015-06-11
+// 50 changed to 200, reduce the number of plotted points
+// 2015-16-10
+// 200 changed to 100
+// Set paint properties
         mPaint = new Paint();
         mPaint.setStrokeWidth((int) scaledDensity);
-        // mPaint.setStrokeWidth(1.5f);
+// mPaint.setStrokeWidth(1.5f);
 
         mPaint.setTextAlign(Paint.Align.LEFT);
         float textSize = 15 * scaledDensity;
         mNormalLeadTextColor = Color.parseColor("#00cc00");
         mRhythmLeadTextColor = Color.YELLOW;
-        // mWaveTextColor = mContext.getResources().getColor(
-        // R.color.diagnostic_graph_area_graphcolor);
+// mWaveTextColor = mContext.getResources().getColor(
+// R.color.diagnostic_graph_area_graphcolor);
         mWaveColor = Color.GREEN;
         mPaint.setTextSize(textSize);
         mPaint.setAntiAlias(true);
         mLeadNameWidth = (int) mPaint.measureText("aVR");
-        // 右边空隙2个字符宽度
+// Right gap is 2 character widths.
         paddingRight = mPaint.measureText("a");
         mLeadNameWidth += paddingRight + 5;
         FontMetrics fontMetrics = mPaint.getFontMetrics();
@@ -171,7 +182,8 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-    float oneXwidth;//8个像素代表1mm，走速为25mm/s,采样率1000，每隔5个点画一个
+    float oneXwidth;//8 pixels represent 1 mm,
+    // the speed is 25 mm/s, the sampling rate is 1000, and every 5 points, draw one
     float mLastX;
     float mLastRightX;
     float[] mLastYs = new float[12];
@@ -182,7 +194,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
     boolean flag = false;
 
     /**
-     * 绘制波形
+     * draw waveform
      */
     int n = 0;
 
@@ -193,7 +205,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
         }
         if (mLeadRectFs == null && mViewHeight > 0) {
             meanSort();
-            // 刷新条加宽
+            // "enlarge the refresh bar" or "widen the refresh bar."
             Canvas canvas = mHolder.lockCanvas(new Rect(0, 0, mLeadNameWidth, mViewHeight));
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 //            mPaint.setColor(Color.WHITE);
@@ -219,15 +231,15 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
             mLastX = 0;
         }
         Canvas canvas;
-        // 刷新条加宽
+        // Increase the width of the refresh bar
         if (mLastX == 0) {
             canvas = mHolder.lockCanvas(new Rect(mLeadNameWidth, 0, (int) (mLeadNameWidth + oneXwidth * 5 + 20), mViewHeight));
         } else {
-            // 刷新条加宽
+            // Increase the width of the refresh bar
             canvas = mHolder.lockCanvas(new Rect((int) mLastX, 0, (int) (mLastX + oneXwidth * 5 + 20), mViewHeight));
         }
 
-        if(canvas == null){
+        if (canvas == null) {
             return;
         }
 
@@ -250,8 +262,9 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
                     i--;
                     continue;
                 }
-                mCurYs[i] = mCenterLineYs[i] - val * 0.001f * gain * perMillmeter;
-                //两次锁屏连接处多画一个点，避免锁屏时精度损失造成的波形不连续
+                mCurYs[i] = mCenterLineYs[i] - val * 0.001f * gain * perMillimeter;
+                //Add an additional dot at the connection point of the
+                // two screens to avoid discontinuity in the waveform caused by accuracy loss during screen lock.
                 if (j == 0) {
                     if (startX == mLeadNameWidth) {
                         canvas.drawPoint(startX, mCurYs[i], mPaint);
@@ -293,61 +306,54 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * 获取指定区域中用来绘制波形的宽度
-     *
-     * @return
+
+     Get the width used to draw the waveform in the specified region.
+
+     @return The width of the waveform.
      */
     private float getWaveWidth(int index) {
 
-        // 非6x2 + 1模式，每个区域大小相同
+// For non-6x2 + 1 mode, each region has the same size.
 
-        // 6x2 + 1模式，单独的节律导联波形区域最大
+// For 6x2 + 1 mode, the standalone rhythm lead waveform region has the maximum width.
         float maxRectFWidth = mLeadRectFs[index].right
                 - mLeadRectFs[index].left - mLeadNameWidth;
 
         return maxRectFWidth;
     }
 
-
-    private float mScrollY;// 波形在可以垂直移动时，垂直方向偏移量，取值范围为-（maxHeight -
-    // mViewHeight）~0
-
+    private float mScrollY; // Vertical offset of the waveform when it can be vertically moved, ranging from - (maxHeight - mViewHeight) to 0.
 
     /**
-     * 获取 当前是多少导联
-     *
-     * @return
+
+     Get the current number of leads.
+     @return The lead count.
      */
     public int getLeadCount() {
         return mLeadCount;
     }
-
     /**
-     * 设置导联数 12或18
-     *
-     * @param leadCount
+
+     Set the number of leads (12 or 18).
+     @param leadCount The lead count.
      */
     public void setLeadCount(int leadCount) {
         this.mLeadCount = leadCount;
     }
-
-
     /**
-     * 设置波形数据
-     *
-     * @param ecgDataBuf
-     * @return
+
+     Set the waveform data.
+     @param ecgDataBuf The buffer containing the ECG waveform data.
      */
     public void setEcgDataBuf(ConcurrentLinkedQueue<Short> ecgDataBuf) {
         mWaveDatas = ecgDataBuf;
     }
 
-
     float[] mCenterLineYs;
 
 
     /**
-     * 平均排序
+     * Mean sorting
      */
     public void meanSort() {
 
@@ -357,7 +363,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
         int rectFCount = mRow * mColumn + mDisplayRhythmLeadCount;
         mLeadRectFs = new RectF[rectFCount];
         mCenterLineYs = new float[rectFCount];
-        perLeadHeight = (mViewHeight - paddingTop)//2016-09-30  与智能排序保持统一
+        perLeadHeight = (mViewHeight - paddingTop) // 2016-09-30 Keep consistent with intelligent sorting
                 / allRow;
 
         float perColumnWidth = mViewWidth / mColumn;
@@ -366,23 +372,18 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
             // mLeadsCenterLineY[i] = paddingTop + perLeadHeight * (i + 0.5f);
             mLeadRectFs[i] = new RectF();
             int whichColumn;
-            if (mRow == 0) {// 如果perColumnLeadCount = 0，证明只显示节律导联
+            if (mRow == 0) { // If perColumnLeadCount = 0, it means only rhythm leads are displayed
                 whichColumn = mColumn;
             } else {
                 whichColumn = i / mRow;
-
             }
 
-            mLeadRectFs[i].left = perColumnWidth * whichColumn
-                    + paddingLeft;
-            mLeadRectFs[i].right = (perColumnWidth * whichColumn
-                    + perColumnWidth - paddingRight);
+            mLeadRectFs[i].left = perColumnWidth * whichColumn + paddingLeft;
+            mLeadRectFs[i].right = (perColumnWidth * whichColumn + perColumnWidth - paddingRight);
             if (mRow == 0) {
                 mLeadRectFs[i].top = paddingTop + perLeadHeight * i;
             } else {
-
-                mLeadRectFs[i].top = paddingTop + perLeadHeight
-                        * (i % mRow);
+                mLeadRectFs[i].top = paddingTop + perLeadHeight * (i % mRow);
             }
             mLeadRectFs[i].bottom = mLeadRectFs[i].top + perLeadHeight;
             mCenterLineYs[i] = (mLeadRectFs[i].top + mLeadRectFs[i].bottom) / 2;
@@ -398,7 +399,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
         int rectFCount = mRow * mColumn + mDisplayRhythmLeadCount;
         mLeadRectFs = new RectF[rectFCount];
         mCenterLineYs = new float[rectFCount];
-        perLeadHeight = (mViewHeight - paddingTop)//2016-09-30  与智能排序保持统一
+        perLeadHeight = (mViewHeight - paddingTop)//2016-09-30  Maintain consistency with intelligent sorting
                 / allRow;
 
         perColumnWidth = mViewWidth / mColumn;
@@ -407,7 +408,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
             // mLeadsCenterLineY[i] = paddingTop + perLeadHeight * (i + 0.5f);
             mLeadRectFs[i] = new RectF();
             int whichColumn;
-            if (mRow == 0) {// 如果perColumnLeadCount = 0，证明只显示节律导联
+            if (mRow == 0) {// If perColumnLeadCount = 0, it means that only rhythm leads are displayed.
                 whichColumn = mColumn;
             } else {
                 whichColumn = i / mRow;
@@ -459,7 +460,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
                                int height) {
         // TODO Auto-generated method stub
         Log.d(TAG, "surfaceChanged");
-        // 控件大小改变时调用
+        // Called when the size of the control changes
         mViewHeight = height;
         mViewWidth = width;
 
@@ -510,7 +511,7 @@ public class ReviewWave extends SurfaceView implements SurfaceHolder.Callback {
 //            Process.setThreadPriority(Process.THREAD_PRIORITY_DISPLAY);
             Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
             while (refreshWave) {
-                if(!refreshWave){
+                if (!refreshWave) {
                     break;
                 }
                 drawWave();
