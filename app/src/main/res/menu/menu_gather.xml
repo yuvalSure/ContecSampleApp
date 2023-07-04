@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" android:background="#00000000" >
+    <item android:id="@+id/setAC" 
+          android:title="ACFilter" 
+          android:background="#00000000"/>"
+    <item android:id="@+id/setMG" 
+          android:title="MGFilter"  
+          android:background="#00000000"/>
+	<item android:id="@+id/setBL" 
+	      android:title="BLFilter"  
+	      android:background="#00000000"/>
+	<item android:id="@+id/setAll" 
+	      android:title="All"  
+	      android:background="#00000000"/>
+	<item android:id="@+id/setDefault" 
+	      android:title="None"  
+	      android:background="#00000000"/>
+</menu>
+ 

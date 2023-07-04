@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="gesture_thumbnail_inset">8dip</dimen>
+    <dimen name="gesture_thumbnail_size">64dip</dimen>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">ECG_SDK_DEMO_NOVIEW_AS</string>
+    <string name="display_GAIN">Gain</string>
+    <string name="display_SPEED">Speed</string>
+    <string name="empty"/>
+    <string name="filter_AC">AC</string>
+    <string name="filter_ALL">ALL</string>
+    <string name="filter_BL">BL</string>
+    <string name="filter_ENG">EMG</string>
+    <string name="filter_NO">NO</string>
+    <string name="gesture_button_add">button_define</string>
+    <string name="gesture_button_discard">button_discard</string>
+    <string name="gesture_button_done">button_done</string>
+    <string name="gesture_define_button12">Mode 12*1</string>
+    <string name="gesture_define_button62">Mode 6*2</string>
+    <string name="gesture_define_button621">Mode 6*2+1</string>
+    <string name="hello">ECG_SDK_DEMO_AS!</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_gesture_function_define">GestureFunctionDefine</string>
+    <string name="wave_display_MODE">Display Mode</string>
+    <style name="popwindow_anim">
+
+  <item name="android:windowEnterAnimation">@anim/push_left_in</item>        <!-- 指定显示的动画xml  -->
+
+   <item name="android:windowExitAnimation">@anim/push_left_out</item>       <!-- 指定消失的动画xml  -->
+ </style>
+    <declare-styleable name="SatelliteMenu">
+		<attr format="integer" name="expandDuration"/>
+		<attr format="boolean" name="closeOnClick"/>
+		<attr format="float" name="totalSpacingDegree"/>
+		<attr format="dimension" name="satelliteDistance"/>
+		<attr format="reference" name="mainImage"/>		
+	</declare-styleable>
+</resources>

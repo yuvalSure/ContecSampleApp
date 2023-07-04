@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/manual"
+          android:title="MANUAL"
+          android:background="#00000000"/>"
+    <item android:id="@+id/stop"
+          android:title="STOP"
+          android:background="#00000000"/>
+    <item android:id="@+id/auto12x1"
+          android:title="12X1"
+          android:background="#00000000"/>
+    <item android:id="@+id/auto6x2"
+          android:title="6X2"
+          android:background="#00000000"/>
+    <item android:id="@+id/auto3x4"
+          android:title="3X4"
+          android:background="#00000000"/>
+    <item android:id="@+id/auto6x2_1"
+          android:title="6X2+1"
+          android:background="#00000000"/>
+    <item android:id="@+id/auto3x4_2"
+          android:title="3X4+2"
+          android:background="#00000000"/>
+    <item android:id="@+id/rhythm6"
+          android:title="RHYTHM6"
+          android:background="#00000000"/>
+    <item android:id="@+id/rhythm8"
+          android:title="RHYTHM8"
+          android:background="#00000000"/>
+    <item android:id="@+id/rhythm10"
+          android:title="RHYTHM10"
+          android:background="#00000000"/>
+    <item android:id="@+id/rhythm12"
+          android:title="RHYTHM12"
+          android:background="#00000000"/>
+</menu>

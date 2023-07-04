@@ -1,0 +1,132 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="serial.jni"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="29"
+8-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml
+10
+11    <uses-feature android:name="android.hardware.usb.host" />
+11-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:7:5-62
+11-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:7:19-59
+12
+13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+13-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:8:5-80
+13-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:8:22-78
+14    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+14-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:9:5-78
+14-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:9:22-76
+15    <uses-permission android:name="android.permission.BLUETOOTH" />
+15-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:10:5-68
+15-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:10:22-65
+16    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+16-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:11:5-74
+16-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:11:22-71
+17    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+17-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:12:5-81
+17-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:12:22-78
+18    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+18-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:13:5-84
+18-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:13:22-82
+19    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+19-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:15:5-76
+19-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:15:22-73
+20
+21    <application
+21-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:18:5-88:19
+22        android:debuggable="true"
+23        android:extractNativeLibs="false"
+24        android:icon="@drawable/ic_launcher"
+24-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:19:9-45
+25        android:label="@string/app_name"
+25-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:20:9-41
+26        android:testOnly="true" >
+27        <activity
+27-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:21:9-26:20
+28            android:name="serial.jni.GLActivity"
+28-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:22:13-49
+29            android:label="@string/app_name"
+29-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:23:13-45
+30            android:screenOrientation="portrait"
+30-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:24:13-49
+31            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+31-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:25:13-71
+32        </activity>
+33        <activity
+33-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:27:9-32:20
+34            android:name="serial.jni.GLActivityNew"
+34-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:28:13-52
+35            android:label="@string/app_name"
+35-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:29:13-45
+36            android:screenOrientation="portrait"
+36-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:30:13-49
+37            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+37-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:31:13-71
+38        </activity>
+39        <activity
+39-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:35:9-48:20
+40            android:name="serial.jni.DeviceListActivity"
+40-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:36:13-57
+41            android:exported="true"
+41-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:39:13-36
+42            android:label="@string/app_name"
+42-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:37:13-45
+43            android:screenOrientation="portrait" >
+43-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:38:13-49
+44            <intent-filter>
+44-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:42:13-46:29
+45                <action android:name="android.intent.action.MAIN" />
+45-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:43:17-69
+45-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:43:25-66
+46
+47                <category android:name="android.intent.category.LAUNCHER" />
+47-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:45:17-77
+47-->/home/yuval/Desktop/sure/12-lead-ecg/Android╨─╡ч╒√║╧SDK V1.7.8/temp_yuv/ECG_SDK_DEMO_NOVIEW_AS/app/src/main/AndroidManifest.xml:45:27-74
+48            </intent-filter>
+49        </activity>
+50
+51        <!-- 使用USB OTG设备8000G，8100G时打开此注释，并修改GLActivity中关于data对象创建的代码，参照注释修改 -->
+52
+53
+54        <!--
+55        <activity
+56            android:name="serial.jni.UsbDeviceListActivity"
+57            android:screenOrientation="portrait"
+58            android:label="@string/app_name"
+59            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+60            <intent-filter>
+61                <action android:name="android.intent.action.MAIN" />
+62
+63                <category android:name="android.intent.category.DEFAULT" />
+64                <category android:name="android.intent.category.LAUNCHER" />
+65            </intent-filter>
+66            <intent-filter>
+67                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+68            </intent-filter>
+69
+70            <meta-data
+71                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+72                android:resource="@xml/device_filter" />
+73        </activity>
+74        -->
+75
+76
+77        <!--
+78            <activity
+79            android:name="serial.jni.StartActivity"
+80            android:label="@string/app_name"
+81            android:screenOrientation="portrait" >
+82            <intent-filter>
+83                <action android:name="android.intent.action.MAIN" />
+84
+85                <category android:name="android.intent.category.LAUNCHER" />
+86            </intent-filter>
+87        </activity>
+88        -->
+89    </application>
+90
+91</manifest>
