@@ -1,16 +1,8 @@
 package serial.jni;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
@@ -27,11 +19,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import serial.jni.BluConnectionStateListener;
-import serial.jni.DataUtils;
-import serial.jni.ExtensionDeviceBind;
-import serial.jni.GLView;
-import serial.jni.NativeCallBack;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GLActivityNew extends Activity {
     private ReviewWave newView;
@@ -42,19 +35,20 @@ public class GLActivityNew extends Activity {
     private String strCase;
     /**
      * 2018-05 isFinishActivity
-     * 此变量根据实际使用场景设置，当返回执行关闭当前波形显示acticity时，由于可能蓝牙正在连接中，会返回连接失败的消息
-     * 需要判断相关处理操作是否已经执行，避免多次执行打开某个activity的操作或对其它变量及状态的处理，造成不必要的错误
+     * This variable is set based on the actual usage scenario. When returning to close the current waveform display activity, there may be a Bluetooth connection in progress and a message of connection failure will be returned.
+     * It is necessary to check whether the relevant processing operations have been executed to avoid multiple executions of opening a certain activity or handling other variables and states, causing unnecessary errors.
      */
     private boolean isFinishActivity;
     private int m = 0;
     private int n = 0;
     private int p = 0;
     private int q = 0;
-    private Button btnStartConnect ;
-    private Button btnStopConnect ;
+    private Button btnStartConnect;
+    private Button btnStopConnect;
 
-    private Button btnStartECGRenderer ;
-    private Button btnStopECGRenderer ;
+    private Button btnStartECGRenderer;
+    private Button btnStopECGRenderer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +118,7 @@ public class GLActivityNew extends Activity {
 
             @Override
             public void onClick(View v) {
-                // 分析数据文件，结果存储为xml
+                // Analyze the data file and store the result as XML.
 /*
                 int ret = data.ecgAnalyzeToXml(
                         Environment.getExternalStorageDirectory() + "/"
@@ -134,10 +128,10 @@ public class GLActivityNew extends Activity {
                         Environment.getExternalStorageDirectory()
                                 + "/conclusion.cn");
                 */
-//自定义心率上下限
+//Customize heart rate upper and lower limits.
                 int ret = data.ecgAnalyzeToXml("/mnt/sdcard/AECG",
                         "/mnt/sdcard/BECG_advice.xml",
-                        "/mnt/sdcard/conclusion.cn",50,80);
+                        "/mnt/sdcard/conclusion.cn", 50, 80);
 
                 Log.e("ANA", "ecgAnalyzeToXml ret = " + ret);
             }
@@ -147,22 +141,22 @@ public class GLActivityNew extends Activity {
 
             @Override
             public void onClick(View v) {
-                // data.setGain(DataUtils.DISPLAY_GAIN__20);
-                // 数据文件转换成aecg格式病例
-                // int ret = data.ecgDataToAECG(
-                // Environment.getExternalStorageDirectory() + "/"
-                // + strCase + ".c8k",
-                // Environment.getExternalStorageDirectory() + "/BECG.xml");
+                // Set the gain to 20 for the data
+// Convert the data file to aecg format case
+// int ret = data.ecgDataToAECG(
+// Environment.getExternalStorageDirectory() + "/"
+// + strCase + ".c8k",
+// Environment.getExternalStorageDirectory() + "/BECG.xml");
                 int ret = data.ecg15DataToAECG(
                         Environment.getExternalStorageDirectory() + "/"
                                 + "AECG.c8k",
                         Environment.getExternalStorageDirectory() + "/BECG.xml");
 /*
-                18导时使用ecg18DataToAECG这个方法进行aecg转换
-                int ret = data.ecg18DataToAECG(
-                        Environment.getExternalStorageDirectory() + "/"
-                                + "20170419152220.c8k",
-                        Environment.getExternalStorageDirectory() + "/BECG.xml");
+Use ecg18DataToAECG method for aecg conversion with 18 leads
+int ret = data.ecg18DataToAECG(
+Environment.getExternalStorageDirectory() + "/"
++ "20170419152220.c8k",
+Environment.getExternalStorageDirectory() + "/BECG.xml");
 */
                 Log.e("aecg", "ecgDataToAECG ret = " + ret);
             }
@@ -176,19 +170,19 @@ public class GLActivityNew extends Activity {
 //				data.setSpeed(DataUtils.DISPLAY_SPEED_50);
                 if (n % 5 == 0) {
                     data.setFilter(0);
-                    Toast.makeText(mContext, "滤波全关", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "All Filters Off", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 1) {
                     data.setFilter(1);
-                    Toast.makeText(mContext, "工频滤波", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Power Line Filter", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 2) {
                     data.setFilter(2);
-                    Toast.makeText(mContext, "肌电滤波", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "EMG Filter", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 3) {
                     data.setFilter(4);
-                    Toast.makeText(mContext, "基线滤波", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Baseline Filter", Toast.LENGTH_LONG).show();
                 } else if (n % 5 == 4) {
                     data.setFilter(7);
-                    Toast.makeText(mContext, "滤波全开", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "All Filters On", Toast.LENGTH_LONG).show();
                 }
                 n++;
             }
@@ -197,7 +191,7 @@ public class GLActivityNew extends Activity {
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                data.cancelCase();// 取消正在保存的文件
+//                data.cancelCase();// Cancel the file being saved.
 /*                if (!isFinishActivity) {
                     isFinishActivity = true;
                     Intent intent = new Intent();
@@ -225,7 +219,7 @@ public class GLActivityNew extends Activity {
             @Override
             public void onClick(View v) {
                 data.saveCase(Environment.getExternalStorageDirectory() + "/",
-                        strCase, 20);// 存储文件 参数为路径，文件名，存储秒数
+                        strCase, 20);// Storage file parameters are path, file name, and storage duration in seconds.
             }
         });
         //displaymode
@@ -234,16 +228,16 @@ public class GLActivityNew extends Activity {
             public void onClick(View v) {
                 if (q % 4 == 0) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_12x1);
-                    Toast.makeText(mContext, "12x1显示，仅12导有效！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "12x1 display, only 12 leads valid!", Toast.LENGTH_LONG).show();
                 } else if (q % 4 == 1) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_6x2);
-                    Toast.makeText(mContext, "6x2显示，仅12导有效！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "6x2 display, only 12 leads valid!", Toast.LENGTH_LONG).show();
                 } else if (q % 4 == 2) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_2x6_LIMB);
-                    Toast.makeText(mContext, "6导（肢体导联）显示", Toast.LENGTH_LONG).show();
-                }  else if (q % 4 == 2) {
+                    Toast.makeText(mContext, "6 leads (limb leads) display", Toast.LENGTH_LONG).show();
+                } else if (q % 4 == 2) {
                     data.setDisplayMode(DataUtils.DISPLAY_MODE_2x6_CHEST);
-                    Toast.makeText(mContext, "6导（胸导导联）显示", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "6 leads (chest leads) display", Toast.LENGTH_LONG).show();
                 }
                 q++;
             }
@@ -290,7 +284,8 @@ public class GLActivityNew extends Activity {
                     Toast.makeText(mContext, "20mm/mV", Toast.LENGTH_LONG).show();
                 } else if (m % 6 == 3) {
                     data.setGain(DataUtils.DISPLAY_GAIN_2_5);
-                    Toast.makeText(mContext, "2.5mm/mV", Toast.LENGTH_LONG).show();;
+                    Toast.makeText(mContext, "2.5mm/mV", Toast.LENGTH_LONG).show();
+                    ;
                 } else if (m % 6 == 4) {
                     data.setGain(DataUtils.DISPLAY_GAIN_Limb10_Chest5);
                     Toast.makeText(mContext, "肢导10mm/mV,胸导5mm/mV", Toast.LENGTH_LONG).show();
@@ -301,16 +296,16 @@ public class GLActivityNew extends Activity {
                 m++;
             }
         });
-        // data对象包含所有心电采集相关操作
-        // glView负责显示
-        // 蓝牙采集
+        // The data object contains all the operations related to electrocardiogram (ECG) acquisition.
+// glView is responsible for displaying.
+// Bluetooth collection.
 //*
         Intent para = null;
         para = getIntent();
         if (para != null) {
             String address = para.getExtras().getString("device_address");
 
-            data = new DataUtils(mContext, address,DataUtils.ECG_LEAD_WILSON,false,
+            data = new DataUtils(mContext, address, DataUtils.ECG_LEAD_WILSON, false,
                     new BluConnectionStateListener() {
                         @Override
                         public void OnBluConnectionInterrupted() {
@@ -343,11 +338,11 @@ public class GLActivityNew extends Activity {
 //            bindDev(address);
         }
         //*/
-        // 演示文件采集
+        // Collecting demonstration files.
 //         data = new DataUtils(Environment.getExternalStorageDirectory().getPath()+"/demo.ecg");
 //         btnStartECGRenderer.setEnabled(true);
 /*
-		// USB 8000G 设备支持
+		// USB 8000G Device Support
 		mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 		data = new DataUtils(mUsbManager, new USBConnectionStateListener() {
 
@@ -462,7 +457,7 @@ public class GLActivityNew extends Activity {
         }, DataUtils.ECG_USB_SERIAL_BAUDRATE_460800,DataUtils.ECG_LEAD_18_TYPE_15);
         //*/
 
-        // 以下关于glView操作为必要操作，请不要更改
+        // The following operations regarding glView are necessary operations. Please do not make any changes.
         data.setDisplayMode(DataUtils.DISPLAY_MODE_12x1);
         data.setGain(DataUtils.DISPLAY_GAIN_5);
         data.setSpeed(DataUtils.DISPLAY_SPEED_25);
@@ -494,7 +489,9 @@ public class GLActivityNew extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        // 此函数执行时，不要执行强制退出、多次点击返回按键等影响android生命周期管理的操作！
+        // When executing this function, avoid performing operations such as force quitting,
+        // repeatedly pressing the back button, or any other actions
+        // that would affect the management of the Android lifecycle.
         newView.onPause();
         data.gatherEnd();
         data.gatherRelease();
@@ -595,7 +592,7 @@ public class GLActivityNew extends Activity {
                     break;
                 case MESSAGE_USB_CONNECT_REMOVE_DEVICE:
                     Log.e("BL", "MESSAGE_USB_CONNECT_REMOVE_DEVICE");
-                    Toast.makeText(mContext, "USB设备被移除", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "The USB device has been removed.", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
 //                case MyRenderer.MESSAGE_GATHER_START:
@@ -643,12 +640,12 @@ public class GLActivityNew extends Activity {
     class nativeMsg extends NativeCallBack {
 
         @Override
-        public void callHRMsg(short hr) {// 心率
+        public void callHRMsg(short hr) {// Heart rate
             mHandler.obtainMessage(MESSAGE_UPDATE_HR, hr).sendToTarget();
         }
 
         @Override
-        public void callLeadOffMsg(String flagOff) {// 导联脱落
+        public void callLeadOffMsg(String flagOff) {// lead detachment
             // Log.e("LF", flagOff);
             mHandler.obtainMessage(MESSAGE_UPDATE_LeadOff, flagOff).sendToTarget();
         }
@@ -661,24 +658,24 @@ public class GLActivityNew extends Activity {
         @Override
         public void callCaseStateMsg(short state) {
             if (state == 0) {
-                Log.e("Save", "start");// 开始存储文件
+                Log.e("Save", "start");// Start storing the file.
             } else {
-                Log.e("Save", "end");// 存储完成
+                Log.e("Save", "end");// Storage completed
             }
         }
 
         @Override
-        public void callHBSMsg(short hbs) {// 心率 hbs = 1表示有心跳
-            // Log.e("HeartBeat", "Sound"+hbs);
+        public void callHBSMsg(short hbs) {// Heart rate hbs = 1 indicates heartbeat
+// Log.e("HeartBeat", "Sound"+hbs);
         }
 
         @Override
-        public void callBatteryMsg(short per) {// 采集盒电量
+        public void callBatteryMsg(short per) {// Collection box battery level
             // Log.e("Battery", ""+per);
         }
 
         @Override
-        public void callCountDownMsg(short per) {// 剩余存储时长
+        public void callCountDownMsg(short per) {// Remaining storage duration
             // Log.e("CountDown", ""+per);
         }
 
@@ -686,12 +683,14 @@ public class GLActivityNew extends Activity {
         public void callWaveColorMsg(boolean flag) {
             Log.e("WaveColor", "" + flag);
             if (flag) {
-                // 波形稳定后颜色变为绿色
+                // After the waveform stabilizes, the color becomes green
                 newView.setRendererColor(0, 1.0f, 0, 0);
-                // 以下操作可以实现自动开始保存文件
-                // data.saveCase(Environment.getExternalStorageDirectory() + "/",strCase, 20);// 存储文件 参数为路径，文件名，存储秒数
+                // The following operations can automatically start saving files
+                // data.saveCase(Environment.getExternalStorageDirectory() + "/",strCase, 20);// Store file parameters for path, filename, storage seconds
             }
         }
+
+
         @Override
         public void callEcgWaveDataMsg(short[] wave) {
             // TODO Auto-generated method stub
@@ -714,14 +713,15 @@ public class GLActivityNew extends Activity {
             }
 
         }
-       /*
-            Real-time ECG waveform data callback. Be careful not to do time-consuming operations in this function (running time-consuming
-            should be less than 5ms), otherwise it will affect the real-time data processing speed, please refer to the sample program for the processing method.
 
-            5 sampling point data are returned each time, the structure is as shown in the figure below
+        /*
+             Real-time ECG waveform data callback. Be careful not to do time-consuming operations in this function (running time-consuming
+             should be less than 5ms), otherwise it will affect the real-time data processing speed, please refer to the sample program for the processing method.
 
-       */
-       @Override
+             5 sampling point data are returned each time, the structure is as shown in the figure below
+
+        */
+        @Override
         public void callEcg18WaveDataMsg(short[] wave) {
             // TODO Auto-generated method stub
             if (mEcgQueue != null) {
@@ -730,6 +730,7 @@ public class GLActivityNew extends Activity {
                 }
             }
         }
+
         @Override
         public void callEcg15WaveDataMsg(short[] wave) {
             // TODO Auto-generated method stub
@@ -739,6 +740,7 @@ public class GLActivityNew extends Activity {
                 }
             }
         }
+
         @Override
         public void callVcgWaveDataMsg(short[] wave) {
             // TODO Auto-generated method stub
@@ -763,7 +765,7 @@ public class GLActivityNew extends Activity {
                                       short pr, byte err) {
             // TODO Auto-generated method stub
             super.callNibpResultMsg(sys, dia, mea, pr, err);
-            Log.e("callNibpResultMsg", "sys : " + sys +" dia : " + dia + " mea : " + mea);
+            Log.e("callNibpResultMsg", "sys : " + sys + " dia : " + dia + " mea : " + mea);
             data.BluNIBPConfirmCmd();
         }
 
@@ -816,58 +818,64 @@ public class GLActivityNew extends Activity {
                 | Intent.FLAG_ACTIVITY_NO_HISTORY);
         context.startActivity(intent);
     }
+
     private ConcurrentLinkedQueue<Short> mEcgQueue;
     private ExtensionDeviceBind bindDev;
 
-    //2020-05-13 采样转换 1000-->256
+    //2020-05-13 Sampling conversion 1000 --> 256
     private int srcDataIndex = 0;
     private int selectDataIndex = 0;
     private final int srcDataBufferSize = 6;
-    private EcgPoint []srcDataBuffer = new EcgPoint[srcDataBufferSize];
+    private EcgPoint[] srcDataBuffer = new EcgPoint[srcDataBufferSize];
+
     private class EcgPoint {
-        public short []ecg;
-        public EcgPoint(){
+        public short[] ecg;
+
+        public EcgPoint() {
             ecg = new short[12];
         }
     }
-    private EcgPoint[] convertShortArrayToEcgPointArray(short []data){
-        EcgPoint []des = new EcgPoint[5];
+
+    private EcgPoint[] convertShortArrayToEcgPointArray(short[] data) {
+        EcgPoint[] des = new EcgPoint[5];
         for (int i = 0; i < 5; i++) {
             EcgPoint point = new EcgPoint();
             for (int j = 0; j < 12; j++) {
                 point.ecg[j] = data[12 * i + j];
             }
-            des[i]  = point;
+            des[i] = point;
         }
         return des;
     }
-    private Vector<EcgPoint> convertFSMP(EcgPoint []src){
+
+    private Vector<EcgPoint> convertFSMP(EcgPoint[] src) {
         for (int i = 0; i < 5; i++) {
             srcDataBuffer[srcDataIndex % srcDataBufferSize] = src[i];
-            srcDataIndex ++;
+            srcDataIndex++;
         }
         Vector<EcgPoint> points = new Vector<>();
-        float currentIndex =  selectDataIndex * 3.90625f;
-        while(currentIndex <= ((srcDataIndex - 1)*1.0f)){
+        float currentIndex = selectDataIndex * 3.90625f;
+        while (currentIndex <= ((srcDataIndex - 1) * 1.0f)) {
             EcgPoint point = new EcgPoint();
             int index1 = (int) currentIndex;
             int index2 = index1 + 1;
             for (int i = 0; i < 12; i++) {
-                short val = (short)(srcDataBuffer[index1 % srcDataBufferSize].ecg[i] + (srcDataBuffer[index2 % srcDataBufferSize].ecg[i] - srcDataBuffer[index1 % srcDataBufferSize].ecg[i]) * (currentIndex - index1*1.0f));
+                short val = (short) (srcDataBuffer[index1 % srcDataBufferSize].ecg[i] + (srcDataBuffer[index2 % srcDataBufferSize].ecg[i] - srcDataBuffer[index1 % srcDataBufferSize].ecg[i]) * (currentIndex - index1 * 1.0f));
                 point.ecg[i] = val;
             }
             points.add(point);
-            selectDataIndex ++;
+            selectDataIndex++;
             currentIndex = selectDataIndex * 3.90625f;
         }
         return points;
     }
 
-    private Vector<EcgPoint> convertEcg(short []data){
-        EcgPoint []points = convertShortArrayToEcgPointArray(data);
+    private Vector<EcgPoint> convertEcg(short[] data) {
+        EcgPoint[] points = convertShortArrayToEcgPointArray(data);
         Vector<EcgPoint> vector = convertFSMP(points);
         return vector;
     }
+
     List<byte[]> mDeviceInfos;
 
 
