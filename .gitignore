@@ -1,8 +1,9 @@
 *.iml
 .gradle
-.bin
-.lock
-.idea
+*.bin
+*.lock
+*.idea
+*.flat
 /local.properties
 /.idea/*.xml
 /.idea/dictionaries
