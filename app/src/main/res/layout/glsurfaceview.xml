@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="37dip"
-            android:text="连接设备"
+            android:text="connect device"
             />
 
         <Button
@@ -101,7 +101,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="37dip"
-            android:text="断开设备"
+            android:text="disconnect device"
             />
 
         <Button
@@ -109,7 +109,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="37dip"
-            android:text="开始绘图"
+            android:text="start drawing"
             />
 
         <Button
@@ -117,7 +117,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="37dip"
-            android:text="停止绘图"
+            android:text="stop drawing"
             />
 
         <Button
@@ -125,7 +125,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="37dip"
-            android:text="连接并绑定血氧"
+            android:text="Connect and bind blood oxygen"
             />
 
         <Button
@@ -133,7 +133,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="37dip"
-            android:text="断开血氧绑定连接"
+            android:text="Disconnect blood oxygen binding"
             />
     </LinearLayout>
     <serial.jni.GLView
