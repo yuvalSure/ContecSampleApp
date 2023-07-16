@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -304,38 +305,39 @@ Environment.getExternalStorageDirectory() + "/BECG.xml");
         para = getIntent();
         if (para != null) {
             String address = para.getExtras().getString("device_address");
-
-            data = new DataUtils(mContext, address, DataUtils.ECG_LEAD_WILSON, false,
-                    new BluConnectionStateListener() {
-                        @Override
-                        public void OnBluConnectionInterrupted() {
-                            // TODO Auto-generated method stub
-                            mHandler.obtainMessage(MESSAGE_CONNECT_INTERRUPTED,
-                                    -1, -1).sendToTarget();
-                        }
-
-                        @Override
-                        public void OnBluConnectSuccess() {
-                            // TODO Auto-generated method stub
-                            mHandler.obtainMessage(MESSAGE_CONNECT_SUCCESS, -1,
-                                    -1).sendToTarget();
-                        }
-
-                        @Override
-                        public void OnBluConnectStart() {
-                            // TODO Auto-generated method stub
-                            mHandler.obtainMessage(MESSAGE_CONNECT_START)
-                                    .sendToTarget();
-                        }
-
-                        @Override
-                        public void OnBluConnectFaild() {
-                            // TODO Auto-generated method stub
-                            mHandler.obtainMessage(MESSAGE_CONNECT_FAILED, -1,
-                                    -1).sendToTarget();
-                        }
-                    });
-//            bindDev(address);
+            data = new DataUtils(getPath()+"/demo.ecg");
+            btnStartECGRenderer.setEnabled(true);
+//            data = new DataUtils(mContext, address, DataUtils.ECG_LEAD_WILSON, false,
+//                    new BluConnectionStateListener() {
+//                        @Override
+//                        public void OnBluConnectionInterrupted() {
+//                            // TODO Auto-generated method stub
+//                            mHandler.obtainMessage(MESSAGE_CONNECT_INTERRUPTED,
+//                                    -1, -1).sendToTarget();
+//                        }
+//
+//                        @Override
+//                        public void OnBluConnectSuccess() {
+//                            // TODO Auto-generated method stub
+//                            mHandler.obtainMessage(MESSAGE_CONNECT_SUCCESS, -1,
+//                                    -1).sendToTarget();
+//                        }
+//
+//                        @Override
+//                        public void OnBluConnectStart() {
+//                            // TODO Auto-generated method stub
+//                            mHandler.obtainMessage(MESSAGE_CONNECT_START)
+//                                    .sendToTarget();
+//                        }
+//
+//                        @Override
+//                        public void OnBluConnectFaild() {
+//                            // TODO Auto-generated method stub
+//                            mHandler.obtainMessage(MESSAGE_CONNECT_FAILED, -1,
+//                                    -1).sendToTarget();
+//                        }
+//                    });
+////            bindDev(address);
         }
         //*/
         // Collecting demonstration files.
@@ -926,4 +928,11 @@ Environment.getExternalStorageDirectory() + "/BECG.xml");
         });
 
     }
+
+    private String getPath() {
+        File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        String path = (directory == null) ? "" : directory.getAbsolutePath();
+        return path;
+    }
+
 }
